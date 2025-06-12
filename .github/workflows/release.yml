@@ -22,8 +22,8 @@ jobs:
       - name: List files in the repository
         run: ls -R
 
-      - name: Zip modules folder
-        run: zip -r oneplus13t-fix-odm-${{ env.VERSION }}.zip ./modules
+      - name: Zip module folder
+        run: zip -r oneplus13t-fix-odm-${{ env.VERSION }}.zip ./module
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
