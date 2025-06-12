@@ -1,0 +1,9 @@
+{
+"version":"202408231700",
+"whitelist":["com.tencent.mm","com.tencent.mobileqq","com.sina.weibo","com.xingin.xhs","com.alibaba.android.rimet","com.ss.android.lark","com.tencent.wework"
+,"com.ss.android.ugc.aweme","com.ss.android.ugc.aweme.lite","com.ss.android.ugc.live","com.smile.gifmaker","com.kuaishou.nebula","com.taobao.taobao"
+,"com.xunmeng.pinduoduo","com.jingdong.app.mall","com.tencent.mtt","com.tencent.mtt.lt","com.quark.browser","com.baidu.browser.apps","com.taobao.idlefish"
+,"com.UCMobile","com.ucmobile.lite","com.wuba.zhuanzhuan","com.sankuai.meituan","com.sankuai.meituan.takeoutnew","com.sankuai.meituan.meituanwaimaibusiness"
+,"com.dianping.v1","com.tmall.wireless","com.alibaba.wireless","com.wuba","me.ele","com.baidu.searchbox","com.baidu.searchbox.lite","com.sankuai.meituan.merchant"
+,"com.oppo.daydreamvideo","com.aihuishou.business"]
+}

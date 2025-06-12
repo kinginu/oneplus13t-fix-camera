@@ -1,0 +1,50 @@
+{
+    "isFunctionOpen":1,
+    "isParamAdjustOpen":1,
+    "appConfigList": [
+        // Sort by English alphabet
+        {
+            "appName":"Discord",
+            "packageName":"com.discord",
+            "videoBeautyParam":
+               {
+                   "isOpen": 0,
+                   "fbParam": "0,0,0,0,0,0,0,0,0,0,0",
+                   "activityName": "discord"
+               }
+        },
+
+        {
+            "appName":"Teams",
+            "packageName":"com.microsoft.teams",
+            "videoBeautyParam":
+               {
+                   "isOpen": 0,
+                   "fbParam": "0,0,0,0,0,0,0,0,0,0,0",
+                   "activityName": "skype"
+               }
+        },
+
+        {
+         "appName":"WeChat",
+         "packageName":"com.tencent.mm",
+         "videoBeautyParam":
+            {
+                "isOpen": 0,
+                "fbParam": "0,0,0,0,0,0,0,0,0,0,0",
+                "activityName": "tencent"
+            }
+        },
+
+        {
+            "appName":"WhatsApp",
+            "packageName":"com.whatsapp",
+            "videoBeautyParam":
+               {
+                   "isOpen": 0,
+                   "fbParam": "0,0,0,0,0,0,0,0,0,0,0",
+                   "activityName": "voipcalling"
+               }
+        }
+    ]
+}

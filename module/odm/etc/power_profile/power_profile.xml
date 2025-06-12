@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+**
+** Copyright 2009, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License")
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<device name="Android">
+  <!-- Most values are the incremental current used by a feature,
+       in mA (measured at nominal voltage).
+       The default values are deliberately incorrect values.
+       OEM's must measure and provide actual values before
+       shipping a device.
+       Example real-world values are given in comments, but they
+       are totally dependent on the platform and can vary
+       significantly, so should be measured on the shipping platform
+       with a power meter. -->
+
+  <!-- Display related values. -->
+  <!-- Average battery current draw of display0 while in ambient mode, including backlight.
+       There must be one of these for each display, labeled:
+       ambient.on.display0, ambient.on.display1, etc...
+
+       Each display suffix number should match it's ordinal in its display device config.
+  -->
+  <item name="ambient.on.display0">23.12</item>  <!-- ~23.12mA -->
+  <!-- Average battery current draw of display0 while on without backlight.
+       There must be one of these for each display, labeled:
+       screen.on.display0, screen.on.display1, etc...
+
+       Each display suffix number should match it's ordinal in its display device config.
+  -->
+  <item name="screen.on.display0">100.08</item>  <!-- ~100.08mA -->
+  <!-- Average battery current draw of the backlight at full brightness.
+       The full current draw of display N at full brightness should be the sum of screen.on.displayN
+       and screen.full.displayN
+
+       There must be one of these for each display, labeled:
+       screen.full.display0, screen.full.display1, etc...
+
+       Each display suffix number should match it's ordinal in its display device config.
+  -->
+  <item name="screen.full.display0">202.46</item>  <!-- ~202.46mA -->
+
+  <item name="bluetooth.active">46</item> <!-- Bluetooth data transfer, ~10mA -->
+  <item name="bluetooth.on">1.7</item>  <!-- Bluetooth on & connectable, but not connected, ~0.1mA -->
+  <item name="wifi.on">1.8</item>  <!-- ~3mA -->
+  <item name="wifi.active">223</item>  <!-- WIFI data transfer, ~200mA -->
+  <item name="wifi.scan">120</item>  <!-- WIFI network scanning, ~100mA -->
+  <item name="audio">54.2</item> <!-- ~10mA -->
+  <item name="video">60.0</item> <!-- video ~60mA -->
+  <item name="camera.flashlight">180</item> <!-- Avg. power for camera flash, ~160mA -->
+  <item name="camera.avg">596</item> <!-- Avg. power use of camera in standard usecases, ~550mA -->
+  <item name="gps.on">75</item> <!-- ~50mA -->
+
+  <item name="dsp.audio">78</item> <!-- new add ~10mA -->
+  <item name="dsp.video">51</item> <!-- new add ~50mA -->
+  <item name="bluetooth.controller.idle">1.7</item>  <!--new add -->
+  <item name="bluetooth.controller.rx">76</item>  <!--new add  -->
+  <item name="bluetooth.controller.tx">176</item>  <!--new add  -->
+  <item name="bluetooth.controller.voltage">3300</item>  <!--new add -->
+
+  <!-- Radio related values. For modems without energy reporting support in firmware, use
+       radio.active, radio.scanning, and radio.on. -->
+  <item name="radio.active">161.5</item> <!-- ~200mA -->
+  <item name="radio.scanning">133.5</item> <!-- cellular radio scanning for signal, ~10mA -->
+  <!-- Current consumed by the radio at different signal strengths, when paging -->
+  <array name="radio.on"> <!-- Strength 0 to BINS-1 -->
+      <value>1.2</value> <!-- ~2mA -->
+  </array>
+
+  <!-- Additional power consumption by CPU excluding cluster and core when
+       running -->
+  <array name="cpu.active">
+      <value>0.1</value>
+  </array>
+
+  <!-- A list of heterogeneous CPU clusters, where the value for each cluster represents the
+       number of CPU cores for that cluster.
+
+       Ex:
+       <array name="cpu.clusters.cores">
+         <value>4</value> // cluster 0 has cpu0, cpu1, cpu2, cpu3
+         <value>2</value> // cluster 1 has cpu4, cpu5
+       </array> -->
+  <array name="cpu.clusters.cores">
+      <value>6</value> <!-- cluster 0 has cpu0, cpu1, cpu2, cpu3, cpu4, cpu5-->
+      <value>2</value> <!-- cluster 1 has cpu6, cpu7-->
+  </array>
+
+    <!-- Different CPU speeds for cluster 0 as reported in
+       /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state.
+
+       There must be one of these for each cluster, labeled:
+       cpu.speeds.cluster0, cpu.speeds.cluster1, etc... -->
+    <array name="cpu.core_speeds.cluster0">
+        <value>384000</value>
+        <value>556800</value>
+        <value>748800</value>
+        <value>960000</value>
+        <value>1152000</value>
+        <value>1363200</value>
+        <value>1555200</value>
+        <value>1785600</value>
+        <value>1996800</value>
+        <value>2227200</value>
+        <value>2400000</value>
+        <value>2745600</value>
+        <value>2918400</value>
+        <value>3072000</value>
+        <value>3321600</value>
+        <value>3532800</value>
+    </array>
+
+    <array name="cpu.core_speeds.cluster1">
+        <value>614400</value>
+        <value>1017600</value>
+        <value>1401600</value>
+        <value>1689600</value>
+        <value>1958400</value>
+        <value>2246400</value>
+        <value>2438400</value>
+        <value>2649600</value>
+        <value>2841600</value>
+        <value>3072000</value>
+        <value>3283200</value>
+        <value>3513600</value>
+        <value>3801600</value>
+        <value>4089600</value>
+        <value>4204800</value>
+        <value>4320000</value>
+  </array>
+
+  <!-- Current at each CPU speed for cluster 0, as per 'cpu.speeds.cluster0'.
+       Like cpu.speeds.cluster0, there must be one of these present for
+       each heterogeneous CPU cluster. -->
+
+        <array name="cpu.core_power.cluster0">
+        <value>21.86</value>  <!-- 384  MHz CPU speed -->
+        <value>28.44</value>  <!-- 556  MHz CPU speed -->
+        <value>37.33</value>  <!-- 748  MHz CPU speed -->
+        <value>46.13</value>  <!-- 960  MHz CPU speed -->
+        <value>56.36</value>  <!-- 1152  MHz CPU speed -->
+        <value>69.74</value>  <!-- 1363  MHz CPU speed -->
+        <value>81.67</value>  <!-- 1555  MHz CPU speed -->
+        <value>99.99</value>  <!-- 1785  MHz CPU speed -->
+        <value>117.9</value> <!-- 1996  MHz CPU speed -->
+        <value>141.3</value> <!-- 2227  MHz CPU speed -->
+        <value>164.1</value> <!-- 2400  MHz CPU speed -->
+        <value>216.6</value> <!-- 2745  MHz CPU speed -->
+        <value>261.9</value> <!-- 2918  MHz CPU speed -->
+        <value>316.9</value> <!-- 3072  MHz CPU speed -->
+        <value>376.0</value> <!-- 3321  MHz CPU speed -->
+        <value>442.2</value> <!-- 3532  MHz CPU speed -->
+  </array>
+
+  <!-- Current at each CPU speed for cluster 1, as per 'cpu.speeds.cluster1'.
+       Like cpu.speeds.cluster1, there must be one of these present for
+       each heterogeneous CPU cluster. -->
+  <array name="cpu.core_power.cluster1">
+        <value>55.64</value>  <!-- 1017  MHz CPU speed -->
+        <value>89.46</value>  <!-- 1209  MHz CPU speed -->
+        <value>128.2</value> <!-- 1401  MHz CPU speed -->
+        <value>174.3</value> <!-- 1689  MHz CPU speed -->
+        <value>206.6</value> <!-- 1958  MHz CPU speed -->
+        <value>254.9</value> <!-- 2246  MHz CPU speed -->
+        <value>294.5</value> <!-- 2438  MHz CPU speed -->
+        <value>346.4</value> <!-- 2649  MHz CPU speed -->
+        <value>389.3</value> <!-- 2841  MHz CPU speed -->
+        <value>455.2</value> <!-- 3072  MHz CPU speed -->
+        <value>542.7</value> <!-- 3283  MHz CPU speed -->
+        <value>657.3</value> <!-- 3513  MHz CPU speed -->
+        <value>871.6</value> <!-- 3801  MHz CPU speed -->
+        <value>1039</value> <!-- 4089  MHz CPU speed -->
+        <value>1138</value> <!-- 4204  MHz CPU speed -->
+        <value>1180</value> <!-- 4320  MHz CPU speed -->
+  </array>
+
+
+  <!-- Current when CPU is awake -->
+  <item name="cpu.awake">15.68</item>
+  <!-- Current when CPU is idle -->
+  <item name="cpu.idle">6.5</item>
+
+  <!-- Memory bandwidth power values in mA at the rail. There must be one value
+       for each bucket defined in the device tree. -->
+  <array name="memory.bandwidths">
+    <value>22.7</value> <!-- mA for bucket: 100mb/s-1.5 GB/s memory bandwidth -->
+  </array>
+
+  <!-- This is the battery capacity in mAh (measured at nominal voltage) -->
+  <item name="battery.capacity">6260</item>
+
+  <!-- Wifi related values. -->
+  <!-- Idle Receive current for wifi radio in mA. 0 by default-->
+  <item name="wifi.controller.idle">1.4</item>
+  <!-- Rx current for wifi radio in mA. 0 by default-->
+  <item name="wifi.controller.rx">177</item>
+  <!-- Tx current for wifi radio in mA. 0 by default-->
+  <item name="wifi.controller.tx">269</item>
+  <!-- Current at each of the wifi Tx levels in mA. The number of tx levels varies per device
+       and is available only of wifi chipsets which support the tx level reporting. Use
+        wifi.tx for other chipsets. none by default -->
+  <array name="wifi.controller.tx_levels"> <!-- mA -->
+  </array>
+  <!-- Operating volatage for wifi radio in mV. 0 by default-->
+  <item name="wifi.controller.voltage">3300</item>
+
+  <array name="wifi.batchedscan"> <!-- mA -->
+    <value>.0002</value> <!-- 1-8/hr -->
+    <value>.002</value>  <!-- 9-64/hr -->
+    <value>.02</value>   <!-- 65-512/hr -->
+    <value>.2</value>    <!-- 513-4,096/hr -->
+    <value>2</value>    <!-- 4097-/hr -->
+  </array>
+
+  <!-- Cellular modem related values.-->
+  <modem>
+    <!-- Modem sleep drain current value in mA. -->
+    <sleep>0</sleep>
+    <!-- Modem idle drain current value in mA. -->
+    <idle>0</idle>
+    <!-- Modem active drain current values.
+         Multiple <active /> can be defined to specify current drain for different modes of
+         operation.
+         Available attributes:
+             rat - Specify the current drain for a Radio Access Technology.
+                   Available options are "LTE", "NR" and "DEFAULT".
+                   <active rat="default" /> will be used for any usage that does not match any other
+                   defined <active /> rat.
+
+             nrFrequency - Specify the current drain for a frequency level while NR is active.
+                           Available options are "LOW", "MID", "HIGH", "MMWAVE", and "DEFAULT",
+                           where,
+                           "LOW" indicated <1GHz frequencies,
+                           "MID" indicates 1GHz to 3GHz frequencies,
+                           "HIGH" indicates 3GHz to 6GHz frequencies,
+                           "MMWAVE"indicates >6GHz frequencies.
+                           <active rat="NR" nrFrequency="default"/> will be used for any usage that
+                           does not match any other defined <active rat="NR" /> nrFrequency.
+    -->
+    <active rat="DEFAULT">
+      <!-- Transmit current drain in mA. -->
+      <receive>0</receive>
+
+      <!-- Transmit current drains in mA. Must be defined for all levels (0 to 4) -->
+      <transmit level="0">0</transmit>
+      <transmit level="1">0</transmit>
+      <transmit level="2">0</transmit>
+      <transmit level="3">0</transmit>
+      <transmit level="4">0</transmit>
+    </active>
+    <!-- Additional <active /> may be defined.
+         Example:
+             <active rat="LTE"> ... </active>
+             <active rat="NR" nrFrequency="MMWAVE"> ... </active>
+             <active rat="NR" nrFrequency="DEFAULT"> ... </active>
+    -->
+  </modem>
+  <item name="modem.controller.voltage">0</item>
+
+  <!-- GPS related values. Default is 0.-->
+  <array name="gps.signalqualitybased"> <!-- Strength 0 to 1 -->
+    <value>0</value>
+    <value>0</value>
+  </array>
+  <item name="gps.voltage">0</item>
+</device>
