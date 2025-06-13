@@ -4,4 +4,4 @@ version=v1.0
 versionCode=1
 author=kinginu
 description=Fix camera for OnePlus 13T on OxygenOS 15.
-updateJson=
+updateJson=https://raw.githubusercontent.com/kinginu/oneplus13t-fix-camera/main/update.json
