@@ -35,7 +35,7 @@ mount --bind $MODDIR/odm/firmware/fastchg /odm/firmware/fastchg
 # mount --bind $MODDIR/odm/lib/
 
 # Mounting /odm/lib64
-mount --bind $MODDIR/odm/lib64/vendor.oplus.hardware.eid-V1-ndk.so /odm/lib64/vendor.oplus.hardware.esim-V1-ndk.so
+# mount --bind $MODDIR/odm/lib64/vendor.oplus.hardware.eid-V1-ndk.so /odm/lib64/vendor.oplus.hardware.esim-V1-ndk.so
 
 # Mounting /odm/lib64/camera/
 mount --bind $MODDIR/odm/lib64/camera /odm/lib64/camera
