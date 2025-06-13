@@ -1,0 +1,72 @@
+{
+    "proj":"dodge_8750_23821",
+    "cameraMode": 0,
+    "face_restore_capmode_front_all":
+    {
+        "_comment frMethodMode": "1: yuv single-frame, 2.p010 refer, 3.raw refer, 4.AIGC facesr and BGSR, 5. AIGC facesr",
+        "frMethodMode":2,
+        "faceSupportConfigs":{
+            "supportFaceNum":3,
+            "supportFaceSizeRange":[200,4000],
+            "faceSRBlurRange":[0, 100],
+            "motionBlurRange":[0, 70],
+            "isMotionBlurThreshold":99
+        },
+        "alphaFusionParams":{
+            "sceneNum":4,
+            "sceneBlurLevel":[10,50,80],
+            "sceneAlphaValues":[1.0,1.0,1.0,1.0]
+        }
+    },
+    "face_restore_capmode_rear_main":
+    {
+        "_comment frMethodMode": "1: yuv single-frame, 2.p010 refer, 3.raw refer, 4.AIGC facesr and BGSR, 5. AIGC facesr",
+        "frMethodMode":5,
+        "faceSupportConfigs":{
+            "supportFaceNum":3,
+            "supportFaceSizeRange":[200,5000],
+            "faceSRBlurRange":[0, 100],
+            "motionBlurRange":[0, 70],
+	        "isMotionBlurThreshold":99
+        },
+        "alphaFusionParams":{
+            "sceneNum":4,
+            "sceneBlurLevel":[10,50,80],
+            "sceneAlphaValues":[1.0,1.0,1.0,1.0]
+        }
+    },
+    "face_restore_capmode_rear_tele":
+    {
+        "_comment frMethodMode": "1: yuv single-frame, 2.p010 refer, 3.raw refer, 4.AIGC facesr and BGSR, 5. AIGC facesr",
+        "frMethodMode":1,
+        "faceSupportConfigs":{
+            "supportFaceNum":3,
+            "supportFaceSizeRange":[200,4000],
+            "faceSRBlurRange":[0, 100],
+            "motionBlurRange":[0, 70],
+	        "isMotionBlurThreshold":99
+        },
+        "alphaFusionParams":{
+            "sceneNum":4,
+            "sceneBlurLevel":[11,51,81],
+            "sceneAlphaValues":[1.0,1.0,1.0,1.0]
+        }
+    },
+    "face_restore_capmode_end":
+    {
+        "_comment frMethodMode": "1: yuv single-frame, 2.p010 refer, 3.raw refer, 4.AIGC facesr and BGSR, 5. AIGC facesr",
+        "frMethodMode":1,
+        "faceSupportConfigs":{
+            "supportFaceNum":3,
+            "supportFaceSizeRange":[200,2000],
+            "faceSRBlurRange":[0, 1],
+            "motionBlurRange":[0, 1],
+	        "isMotionBlurThreshold":99
+        },
+        "alphaFusionParams":{
+            "sceneNum":4,
+            "sceneBlurLevel":[10,50,80],
+            "sceneAlphaValues":[1.0,1.0,1.0,1.0]
+        }
+    }
+}
