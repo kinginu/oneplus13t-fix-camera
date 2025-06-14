@@ -1,6 +1,6 @@
 {
-    "version": "v1.0.5",
-    "versionCode": 2,
-    "zipUrl": "https://github.com/kinginu/oneplus13t-fix-camera/releases/download/v1.1/module-v1.1.zip",
-    "changelog": "https://raw.githubusercontent.com/kinginu/oneplus13t-fix-camera/main/changelog.md"
-  }
+  "version": "v1.0.6",
+  "versionCode": 3,
+  "zipUrl": "https://github.com/kinginu/oneplus13t-fix-camera/releases/download/v1.0.5/oneplus13t-fix-camera-1.0.6.zip",
+  "changelog": "https://raw.githubusercontent.com/kinginu/oneplus13t-fix-camera/main/changelog.md"
+}
