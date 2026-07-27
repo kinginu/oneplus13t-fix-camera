@@ -1,16 +1,14 @@
-name: 'Update Version, Tag, and Create Release'
+name: "Release Module"
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'New version number (e.g., v1.0.0)'
+        description: "New version (e.g., CPH2723_16.0.8.301-r2)"
         required: true
-        type: string
       changelog_notes:
-        description: 'Changelog notes for this new version. Use "*" for list items.'
+        description: 'Changelog notes for this release. Use "*" for list items.'
         required: true
-        type: string
 
 permissions:
   contents: write
@@ -25,27 +23,28 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Ensure files exist (first run safety)
+      - name: Initialize required files
         run: |
           [ -f update.json ] || echo '{}' > update.json
           [ -f changelog.md ] || touch changelog.md
 
-      - name: Calculate new versionCode
+      - name: Calculate version code
         id: versioning
         run: |
           current_code=$(grep '^versionCode=' module/module.prop | cut -d'=' -f2)
-          echo "Current versionCode: $current_code"
           new_code=$((current_code + 1))
+
+          echo "Version code: $current_code -> $new_code"
           echo "new_code=$new_code" >> "$GITHUB_OUTPUT"
 
       - name: Update module.prop
         run: |
-          sed -i "s/^version=.*/version=${{ github.event.inputs.version }}/" module/module.prop
+          sed -i "s/^version=.*/version=${{ inputs.version }}/" module/module.prop
           sed -i "s/^versionCode=.*/versionCode=${{ steps.versioning.outputs.new_code }}/" module/module.prop
 
-      - name: Update update.json (points to the release asset we'll upload)
+      - name: Update update.json
         run: |
-          ver="${{ github.event.inputs.version }}"   # e.g., v1.2.3
+          ver="${{ inputs.version }}"
           zip_url="https://github.com/kinginu/oneplus13t-fix-camera/releases/download/${ver}/oneplus13t-fix-camera-${ver}.zip"
           jq \
             --arg ver "$ver" \
@@ -54,53 +53,55 @@ jobs:
             '.version = $ver | .versionCode = ($code | tonumber) | .zipUrl = $url' \
             update.json > tmp.json && mv tmp.json update.json
 
-      - name: Update changelog.md (prepend)
+      - name: Update changelog.md
         env:
-          CHANGELOG_NOTES: ${{ github.event.inputs.changelog_notes }}
+          CHANGELOG_NOTES: ${{ inputs.changelog_notes }}
         run: |
           {
-            echo "## ${{ github.event.inputs.version }} ($(date +'%Y-%m-%d'))"
+            echo "## ${{ inputs.version }} ($(date +'%Y-%m-%d'))"
             echo
             printf "%s\n" "$CHANGELOG_NOTES"
             echo
           } > new_entry.txt
-          cat new_entry.txt changelog.md > temp_changelog.md && mv temp_changelog.md changelog.md
-    
-      - name: Commit and push changes
+          cat new_entry.txt changelog.md > temp && mv temp changelog.md
+
+      - name: Commit changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add module/module.prop update.json changelog.md
-          git commit -m "Chore: Bump version to ${{ github.event.inputs.version }}" || true
+          git commit -m "chore: bump version to ${{ inputs.version }}"
           git push
 
-      - name: Create and push tag
+      - name: Create tag
         run: |
-          git tag ${{ github.event.inputs.version }}          # e.g., v1.2.3
-          git push origin ${{ github.event.inputs.version }}
+          git tag ${{ inputs.version }}
+          git push origin ${{ inputs.version }}
 
-      - name: Build zip from the tagged sources
+      - name: Build module ZIP
+        id: build_zip
         run: |
-          ver="${{ github.event.inputs.version }}"
-          (cd module && zip -r "../oneplus13t-fix-camera-${ver}.zip" .)
-        # => oneplus13t-fix-camera-vX.Y.Z.zip
+          ver="${{ inputs.version }}"
+          zip_name="oneplus13t-fix-camera-${ver}.zip"
+          (cd module && zip -r9 "../${zip_name}" .)
+          echo "zip_name=${zip_name}" >> "$GITHUB_OUTPUT"
 
-      - name: Prepare release body
+      - name: Prepare release notes
         env:
-          CHANGELOG_NOTES: ${{ github.event.inputs.changelog_notes }}
+          CHANGELOG_NOTES: ${{ inputs.changelog_notes }}
         run: |
           {
-            echo "## ${{ github.event.inputs.version }} ($(date +'%Y-%m-%d'))"
+            echo "## Changelog"
             echo
             printf "%s\n" "$CHANGELOG_NOTES"
           } > RELEASE_BODY.md
 
-      - name: Create GitHub Release and upload asset
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          files: oneplus13t-fix-camera-${{ github.event.inputs.version }}.zip
+          tag_name: ${{ inputs.version }}
+          name: "Module for ${{ inputs.version }}"
+          files: |
+            ${{ steps.build_zip.outputs.zip_name }}
           body_path: RELEASE_BODY.md
           fail_on_unmatched_files: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
