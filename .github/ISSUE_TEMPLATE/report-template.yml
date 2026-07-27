@@ -3,6 +3,12 @@ description: "Let us know if the module worked or not on your OnePlus 13T with O
 title: "[Report] Camera Fix - Working or Not Working"
 labels: ["report", "feedback"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        > [!NOTE]
+        > **KernelSU / APatch users:** If photos turn black right after capture (but Pro mode and video work), first try disabling **Umount modules** for the camera app (`com.oplus.camera`) in your manager's App Profile — no root grant needed. See the [README](https://github.com/kinginu/oneplus13t-fix-camera#known-issue-photos-turn-black-after-capture-kernelsu--apatch) for details. If that fixes it, please still submit a report and mention it below.
+
   - type: dropdown
     id: status
     attributes:
@@ -66,6 +72,19 @@ body:
       description: "Select the root manager you used to apply the module."
     validations:
       required: true
+
+  - type: dropdown
+    id: umount-modules
+    attributes:
+      label: "Umount Modules Setting (KernelSU / APatch only)"
+      options:
+        - "Enabled (default)"
+        - "Disabled for the camera app"
+        - "Disabled globally"
+        - "Not sure / Not applicable (e.g., Magisk)"
+      description: "In KernelSU / APatch, check the App Profile of the camera app (com.oplus.camera) for the 'Umount modules' option."
+    validations:
+      required: false
 
   - type: textarea
     id: symptoms
