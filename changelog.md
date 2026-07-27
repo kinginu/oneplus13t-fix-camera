@@ -1,3 +1,9 @@
+## CPH2723_16.0.8.301-r2 (2026-07-27)
+
+* Fix permission setup in post-fs-data.sh (set_perm_recursive is unavailable in boot scripts; permissions are now set explicitly)
+* Restore execute permission and the original SELinux context for the eid service binary mounted over the esim service
+* Document the KernelSU/APatch "Umount modules" workaround for photos turning black after capture (README & issue template)
+
 ## CPH2723_16.0.8.301 (2026-06-30)
 
 * Update ODM blobs from COS: PKX110_16.0.8.300
