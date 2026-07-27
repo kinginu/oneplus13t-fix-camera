@@ -1,14 +1,36 @@
 name: "Release Module"
 
+# Cuts a release from the current state of module/: bumps the version,
+# updates update.json and changelog.md, tags, builds the ZIP and publishes it.
+# Run it directly for changes that do not touch the ODM blobs; the
+# "Update Module" workflow calls it after refreshing those blobs.
+
 on:
   workflow_dispatch:
     inputs:
       version:
         description: "New version (e.g., CPH2723_16.0.8.301-r2)"
         required: true
+        type: string
       changelog_notes:
         description: 'Changelog notes for this release. Use "*" for list items.'
         required: true
+        type: string
+  workflow_call:
+    inputs:
+      version:
+        description: "Version to release"
+        required: true
+        type: string
+      changelog_notes:
+        description: "Changelog notes for this release"
+        required: true
+        type: string
+      release_notes_footer:
+        description: "Extra section appended to the release notes only (not to changelog.md)"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: write
@@ -21,6 +43,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # Pick up commits pushed earlier in this run (e.g. refreshed ODM blobs)
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Initialize required files
@@ -75,25 +99,30 @@ jobs:
 
       - name: Create tag
         run: |
-          git tag ${{ inputs.version }}
-          git push origin ${{ inputs.version }}
+          git tag "${{ inputs.version }}"
+          git push origin "${{ inputs.version }}"
 
       - name: Build module ZIP
         id: build_zip
         run: |
-          ver="${{ inputs.version }}"
-          zip_name="oneplus13t-fix-camera-${ver}.zip"
+          zip_name="oneplus13t-fix-camera-${{ inputs.version }}.zip"
           (cd module && zip -r9 "../${zip_name}" .)
           echo "zip_name=${zip_name}" >> "$GITHUB_OUTPUT"
 
       - name: Prepare release notes
         env:
           CHANGELOG_NOTES: ${{ inputs.changelog_notes }}
+          NOTES_FOOTER: ${{ inputs.release_notes_footer }}
         run: |
           {
             echo "## Changelog"
             echo
             printf "%s\n" "$CHANGELOG_NOTES"
+
+            if [ -n "$NOTES_FOOTER" ]; then
+              echo
+              printf "%s\n" "$NOTES_FOOTER"
+            fi
           } > RELEASE_BODY.md
 
       - name: Create release

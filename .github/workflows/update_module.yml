@@ -1,24 +1,32 @@
 name: "Update Module"
 
+# Refreshes module/odm with the blobs from a ColorOS OTA, then hands the
+# release itself over to the "Release Module" workflow.
+
 on:
   workflow_dispatch:
     inputs:
       oos_version:
         description: "Target OOS Version (e.g., CPH2723_16.0.1.303)"
         required: true
+        type: string
       version_suffix:
         description: "Optional Suffix (e.g., _v2)"
         required: false
         default: ""
+        type: string
       oos_ota_url:
         description: "Source OOS Full OTA URL"
         required: true
+        type: string
       cos_version:
         description: "Source COS Version (e.g., PKX110_16.0.1.301)"
         required: true
+        type: string
       cos_ota_url:
         description: "Source COS Full OTA URL"
         required: true
+        type: string
 
 permissions:
   contents: write
@@ -48,7 +56,7 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
-  build-and-release:
+  update-odm:
     needs: check-tag
     if: needs.check-tag.outputs.exists == 'false'
     runs-on: ubuntu-latest
@@ -59,13 +67,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      - name: Initialize required files
-        run: |
-          [ -f .github/logs/ota_history.yml ] || echo "[]" > .github/logs/ota_history.yml
-          [ -f update.json ] || echo '{}' > update.json
-          [ -f changelog.md ] || touch changelog.md
+          ref: ${{ github.ref_name }}
 
       - name: Prepare environment
         run: |
@@ -110,30 +112,12 @@ jobs:
             jq aria2 erofs-utils erofsfuse \
             brotli lz4 xz-utils unzip zip
 
-          echo "Installing yq..."
-          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-          sudo chmod +x /usr/local/bin/yq
-
           echo "Installing payload-dumper-go..."
           PD_URL="https://github.com/ssut/payload-dumper-go/releases/download/1.3.0/payload-dumper-go_1.3.0_linux_amd64.tar.gz"
           curl -sL "$PD_URL" -o dumper.tar.gz
           tar -xzf dumper.tar.gz
           sudo mv payload-dumper-go /usr/local/bin/payload-dumper-go
           rm dumper.tar.gz
-
-      - name: Calculate version code
-        id: versioning
-        run: |
-          current_code=$(jq -r '.versionCode // 0' update.json)
-
-          if ! [[ "$current_code" =~ ^[0-9]+$ ]]; then
-            current_code=0
-          fi
-
-          new_code=$((current_code + 1))
-
-          echo "Version code: $current_code -> $new_code"
-          echo "new_code=$new_code" >> "$GITHUB_OUTPUT"
 
       - name: Setup extraction paths
         run: |
@@ -201,84 +185,48 @@ jobs:
       - name: Cleanup temporary files
         run: rm -rf "${{ env.WORK_DIR }}" OTA_zip
 
-      - name: Update module.prop
-        run: |
-          sed -i "s/^version=.*/version=${RELEASE_TAG}/" module/module.prop
-          sed -i "s/^versionCode=.*/versionCode=${{ steps.versioning.outputs.new_code }}/" module/module.prop
-
-          if ! grep -q "^versionCode=" module/module.prop; then
-            echo "versionCode=${{ steps.versioning.outputs.new_code }}" >> module/module.prop
-          fi
-
-      - name: Update update.json
-        run: |
-          ver="$RELEASE_TAG"
-          zip_url="https://github.com/kinginu/oneplus13t-fix-camera/releases/download/${ver}/oneplus13t-fix-camera-${ver}.zip"
-          jq \
-            --arg ver "$ver" \
-            --arg code "${{ steps.versioning.outputs.new_code }}" \
-            --arg url "$zip_url" \
-            '.version = $ver | .versionCode = ($code | tonumber) | .zipUrl = $url' \
-            update.json > tmp.json && mv tmp.json update.json
-
-      - name: Update changelog.md
-        run: |
-          {
-            echo "## $RELEASE_TAG ($(date +'%Y-%m-%d'))"
-            echo
-            echo "* Update ODM blobs from COS: ${{ inputs.cos_version }}"
-            echo
-          } > new_entry.txt
-          cat new_entry.txt changelog.md > temp && mv temp changelog.md
-
-      - name: Commit changes
+      - name: Commit ODM changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add module/module.prop update.json changelog.md module/odm .github/logs/odm_changes.md
+          git add module/odm .github/logs/odm_changes.md
           git commit -m "feat: update ODM for $RELEASE_TAG"
           git push
 
-      - name: Create tag
-        run: |
-          git tag "$RELEASE_TAG"
-          git push origin "$RELEASE_TAG"
+  release:
+    needs: [check-tag, update-odm]
+    uses: ./.github/workflows/release.yml
+    with:
+      version: ${{ needs.check-tag.outputs.release_tag }}
+      changelog_notes: "* Update ODM blobs from COS: ${{ inputs.cos_version }}"
+      release_notes_footer: |
+        ---
+        ### Build Info
+        - **Target Version:** `${{ needs.check-tag.outputs.release_tag }}`
+        - **Source COS Version:** `${{ inputs.cos_version }}`
 
-      - name: Build module ZIP
-        id: build_zip
-        run: |
-          zip_name="oneplus13t-fix-camera-${RELEASE_TAG}.zip"
-          (cd module && zip -r9 "../${zip_name}" .)
-          echo "zip_name=${zip_name}" >> "$GITHUB_OUTPUT"
+  record-history:
+    needs: [check-tag, release]
+    runs-on: ubuntu-latest
 
-      - name: Prepare release notes
-        run: |
-          {
-            echo "## Changelog"
-            echo
-            echo "* Update ODM blobs from COS: ${{ inputs.cos_version }}"
-            echo
-            echo "---"
-            echo "### Build Info"
-            echo "- **Target Version:** \`$RELEASE_TAG\`"
-            echo "- **Source COS Version:** \`${{ inputs.cos_version }}\`"
-          } > RELEASE_BODY.md
-
-      - name: Create release
-        uses: softprops/action-gh-release@v2
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          tag_name: ${{ env.RELEASE_TAG }}
-          name: "Module for ${{ env.RELEASE_TAG }}"
-          files: |
-            ${{ steps.build_zip.outputs.zip_name }}
-          body_path: RELEASE_BODY.md
-          fail_on_unmatched_files: true
+          ref: ${{ github.ref_name }}
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
 
       - name: Update OTA history
         env:
-          TAG_VER: ${{ env.RELEASE_TAG }}
+          TAG_VER: ${{ needs.check-tag.outputs.release_tag }}
           COS_VER: ${{ inputs.cos_version }}
         run: |
+          [ -f .github/logs/ota_history.yml ] || echo "[]" > .github/logs/ota_history.yml
+
           TS=$(date -u --iso-8601=seconds)
           export TS
 
@@ -288,6 +236,8 @@ jobs:
             "processed_at": env(TS)
           }]' .github/logs/ota_history.yml
 
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .github/logs/ota_history.yml
-          git commit -m "chore: update OTA history for $RELEASE_TAG [skip ci]"
+          git commit -m "chore: update OTA history for $TAG_VER [skip ci]"
           git push
