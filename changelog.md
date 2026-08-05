@@ -1,3 +1,7 @@
+## CPH2723_16.0.9.401 (2026-08-05)
+
+* Update ODM blobs from COS: PKX110_16.0.9.401
+
 ## CPH2723_16.0.8.301-r2 (2026-07-27)
 
 * Fix permission setup in post-fs-data.sh (set_perm_recursive is unavailable in boot scripts; permissions are now set explicitly)
