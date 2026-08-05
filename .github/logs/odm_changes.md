@@ -1,3 +1,26 @@
+## Update: CPH2723_16.0.9.401
+- **Date:** Wed Aug  5 02:18:10 UTC 2026
+- **Source COS:** PKX110_16.0.9.401
+- **Changes:**
+```diff
+! [UPDATED]   etc/camera/config/oplus_camera_algo_switch_config
+! [UPDATED]   etc/camera/config/oplus_camera_aps_config
+! [UPDATED]   etc/camera/config/oplus_camera_config
+! [UPDATED]   etc/camera/config/oplus_camera_preview_decision_config.json
+! [UPDATED]   etc/camera/config/oplus_preview_decision_params.json
+! [UPDATED]   lib64/camera/components/com.oplus.node.sstabphoto.so
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam0.bin
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam1.bin
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam2.bin
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam3.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam0.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam1.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam2.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam3.bin
+! [UPDATED]   lib64/camera/libpdCustomParam_Cam0.bin
+! [UPDATED]   lib64/camera/revision.txt
+```
+
 ## Update: CPH2723_16.0.8.301
 - **Date:** Tue Jun 30 01:04:36 UTC 2026
 - **Source COS:** PKX110_16.0.8.300
