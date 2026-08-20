@@ -39,14 +39,17 @@ mount --bind $MODDIR/odm/firmware/fastchg /odm/firmware/fastchg
 # mount --bind $MODDIR/odm/lib/
 
 # Mounting /odm/lib64
-mount --bind $MODDIR/odm/lib64/vendor.oplus.hardware.eid-V1-ndk.so /odm/lib64/vendor.oplus.hardware.esim-V1-ndk.so
+# The esim HAL replacement is disabled: the stock esim binary and its ndk lib
+# both exist on /odm and run fine, and bind mounts from /data (nosuid) can
+# never be exec'd by init anyway (nosuid_transition AVC denial -> crash loop).
+# The stock vendor.oplus.hardware.esim service is required for the eSIM entry
+# in Settings to finish enabling.
+# mount --bind $MODDIR/odm/lib64/vendor.oplus.hardware.eid-V1-ndk.so /odm/lib64/vendor.oplus.hardware.esim-V1-ndk.so
 
 # Mounting /odm/bin/hw
-# Capture the original esim service context before it is hidden by the mount,
-# so init can still exec the replacement binary in the expected domain
-ESIM_BIN=/odm/bin/hw/vendor.oplus.hardware.esim@1.0-service
-ESIM_CTX=$(ls -Zd $ESIM_BIN 2>/dev/null | grep -o 'u:object_r:[^ ]*')
-mount --bind $MODDIR/odm/bin/hw/vendor.oplus.hardware.eid@1.0-service $ESIM_BIN
+# ESIM_BIN=/odm/bin/hw/vendor.oplus.hardware.esim@1.0-service
+# ESIM_CTX=$(ls -Zd $ESIM_BIN 2>/dev/null | grep -o 'u:object_r:[^ ]*')
+# mount --bind $MODDIR/odm/bin/hw/vendor.oplus.hardware.eid@1.0-service $ESIM_BIN
 
 # Mounting /odm/lib64/camera/
 mount --bind $MODDIR/odm/lib64/camera /odm/lib64/camera
@@ -63,9 +66,9 @@ chcon -R u:object_r:vendor_configs_file:s0 /odm/firmware/fastchg
 
 chcon u:object_r:vendor_file:s0 /odm/lib64/hw/camera.oemlayer.so
 
-chcon u:object_r:vendor_file:s0 /odm/lib64/vendor.oplus.hardware.esim-V1-ndk.so
+# chcon u:object_r:vendor_file:s0 /odm/lib64/vendor.oplus.hardware.esim-V1-ndk.so
 
-chcon ${ESIM_CTX:-u:object_r:vendor_file:s0} $ESIM_BIN
+# chcon ${ESIM_CTX:-u:object_r:vendor_file:s0} $ESIM_BIN
 
 # Temporary folder for substitution
 TMPDIR=/data/adb/tmp/empty_dir
