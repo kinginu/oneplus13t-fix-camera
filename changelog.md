@@ -1,3 +1,7 @@
+## CPH2723_16.0.9.401-r2 (2026-08-20)
+
+* Stop masking the stock esim HAL with the eid binary. The bind mount came from /data (nosuid), so init could never exec it (nosuid_transition denial) and vendor.oplus.hardware.esim@1.0-service was stuck in a crash loop. The stock esim binary and its ndk library both exist on /odm and run fine; the working IOplusEsim HAL is also required for the eSIM management flow in Settings (see https://github.com/kinginu/oneplus13t-esim).
+
 ## CPH2723_16.0.9.401 (2026-08-05)
 
 * Update ODM blobs from COS: PKX110_16.0.9.401

@@ -1,6 +1,6 @@
 {
-  "version": "CPH2723_16.0.9.401",
-  "versionCode": 15,
-  "zipUrl": "https://github.com/kinginu/oneplus13t-fix-camera/releases/download/CPH2723_16.0.9.401/oneplus13t-fix-camera-CPH2723_16.0.9.401.zip",
+  "version": "CPH2723_16.0.9.401-r2",
+  "versionCode": 16,
+  "zipUrl": "https://github.com/kinginu/oneplus13t-fix-camera/releases/download/CPH2723_16.0.9.401-r2/oneplus13t-fix-camera-CPH2723_16.0.9.401-r2.zip",
   "changelog": "https://raw.githubusercontent.com/kinginu/oneplus13t-fix-camera/main/changelog.md"
 }
