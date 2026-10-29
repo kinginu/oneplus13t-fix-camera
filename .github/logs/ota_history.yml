@@ -17,3 +17,6 @@
 - oos_version: CPH2723_16.0.9.401
   cos_version: PKX110_16.0.9.401
   processed_at: 2026-08-05T02:19:08+00:00
+- oos_version: CPH2723_17.0.0.101
+  cos_version: PKX110_17.0.0.104
+  processed_at: 2026-10-29T00:05:00+00:00
