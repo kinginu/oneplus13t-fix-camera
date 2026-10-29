@@ -294,9 +294,9 @@
 
   "vendor_tag_type_values":{
     "com.oplus.authed.white.list":"com.ss.android.ugc.aweme, com.finshell.wallet",
-    "com.oplus.sat.wide.support.imagesizes":"4096x3072x4096x2304x4096x1888x3072x3072",
-    "com.oplus.sat.ultra.support.imagesizes":"3264x2448x3264x1836x3264x1484x2448x2448",
-    "com.oplus.sat.tele.support.imagesizes":"4096x3072x4096x2304x4096x1888x3072x3072",
+    "com.oplus.sat.wide.support.imagesizes":"4096x3072x4096x2304x4096x1888x4096x1512x3072x3072",
+    "com.oplus.sat.ultra.support.imagesizes":"3264x2448x3264x1836x3264x1484x3264x1204x2448x2448",
+    "com.oplus.sat.tele.support.imagesizes":"4096x3072x4096x2304x4096x1888x4096x1512x3072x3072",
     "com.oplus.front.common.high.mfnr.picturesize":"3280x2464x3280x1848x3280x1470x2464x2464",
     "com.oplus.flash.wide.tel.support":"1",
     "com.oplus.sat.need.set.zoomratio":"1",

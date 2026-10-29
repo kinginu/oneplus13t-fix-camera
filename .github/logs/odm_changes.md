@@ -1,3 +1,47 @@
+## Update: CPH2723_17.0.0.101
+- **Date:** Thu Oct 29 00:04:03 UTC 2026
+- **Source COS:** PKX110_17.0.0.104
+- **Changes:**
+```diff
+! [UPDATED]   bin/hw/vendor.oplus.hardware.eid@1.0-service
+! [UPDATED]   etc/camera/CameraHWConfiguration.config
+! [UPDATED]   etc/camera/config/camera_unit_config
+! [UPDATED]   etc/camera/config/camera_unit_feature_config.protobuf
+! [UPDATED]   etc/camera/config/oplus_camera_algo_switch_config
+! [UPDATED]   etc/camera/config/oplus_camera_aps_config
+! [UPDATED]   etc/camera/config/oplus_camera_config
+! [UPDATED]   etc/camera/config/oplus_camera_preview_decision_config.json
+! [UPDATED]   etc/camera/config/oplus_preview_decision_params.json
+! [UPDATED]   etc/camera/fwk_config.json
+! [UPDATED]   lib64/camera/components/com.oplus.node.depth.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.evaof.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.mvgsat.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.preview.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.sstabdefer.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.sstabphoto.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.sstabrealt.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.videoainr.so
+! [UPDATED]   lib64/camera/components/com.oplus.node.videoltm.so
+! [UPDATED]   lib64/camera/components/com.oplus.stats.aec.so
+! [UPDATED]   lib64/camera/components/com.oplus.stats.af.so
+! [UPDATED]   lib64/camera/components/com.oplus.stats.awb.so
+! [UPDATED]   lib64/camera/components/com.oplus.stats.pdlib.so
+! [UPDATED]   lib64/camera/components/libcamxoemsatsoftwarefusionwrapper.so
+! [UPDATED]   lib64/camera/components/libcamxoemsatwrapper.so
+! [UPDATED]   lib64/camera/components/libopluscolorsensorwrapper.so
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam0.bin
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam1.bin
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam2.bin
+! [UPDATED]   lib64/camera/libaecCustomParam_Cam3.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam0.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam1.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam2.bin
+! [UPDATED]   lib64/camera/libafCustomParam_Cam3.bin
+! [UPDATED]   lib64/camera/libpdCustomParam_Cam0.bin
+! [UPDATED]   lib64/camera/revision.txt
+! [UPDATED]   lib64/hw/camera.oemlayer.so
+```
+
 ## Update: CPH2723_16.0.9.401
 - **Date:** Wed Aug  5 02:18:10 UTC 2026
 - **Source COS:** PKX110_16.0.9.401

@@ -235,7 +235,7 @@
         176,  144
         ]
     },
-    "org.codeaurora.ims": {
+    "com.qualcomm.qti.telephonyservice": {
         "isFreeDomEvictionPackge": true,
         "resolutionFilterForNotAddSizeAPI1": [
             "1206x540"
